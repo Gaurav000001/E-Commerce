@@ -7,44 +7,44 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.masai.exceptions.UsersException;
-import com.masai.models.Users;
-import com.masai.repositories.UsersRepository;
+import com.masai.models.User;
+import com.masai.repositories.UserRepository;
 
 @Service
-public class UsersServiceImpl implements UsersService {
+public class UserServiceImpl implements UserService {
 	
 	@Autowired
-	private UsersRepository usersRepository;
+	private UserRepository usersRepository;
 	
 	@Override
-	public Users getUser(String userId) {
+	public User getUser(String userId) {
 		
 		return usersRepository.findById(userId).orElseThrow(() -> new UsersException("User not found with userId: " + userId));
 	}
 
 	@Override
-	public Users createUser(Users user) {
-		Optional<Users> userByEmailOpt = usersRepository.findByEmail(user.getEmail());
+	public User createUser(User user) {
+		Optional<User> userByEmailOpt = usersRepository.findByEmail(user.getEmail());
 		if(userByEmailOpt.isPresent()) throw new UsersException("User Already Present with email: " + user.getEmail());
 		
-		Optional<Users> userByMobileNumberOpt = usersRepository.findByMobileNumber(user.getMobileNumber());
+		Optional<User> userByMobileNumberOpt = usersRepository.findByMobileNumber(user.getMobileNumber());
 		if(userByMobileNumberOpt.isPresent()) throw new UsersException("User Already Present with mobile number: " + user.getMobileNumber());
 		
 		user.setUserId(UUID.randomUUID().toString());
 		// create and assign one cart to user
 		
-		Users createdUser = usersRepository.save(user);
+		User createdUser = usersRepository.save(user);
 		
 		return createdUser;
 	}
 
 	@Override
-	public Users updateUser(String userId, Users user) {
+	public User updateUser(String userId, User user) {
 		// updates firstname, lastname, and dob
-		Optional<Users> existingUserOpt = usersRepository.findById(userId);
+		Optional<User> existingUserOpt = usersRepository.findById(userId);
 		if(existingUserOpt.isEmpty()) throw new UsersException("User Not found with userId: " + userId);
 		
-		Users existingUser = existingUserOpt.get();
+		User existingUser = existingUserOpt.get();
 		existingUser.setFirstname(user.getFirstname());
 		existingUser.setLastname(user.getLastname());
 		existingUser.setDob(user.getDob());
@@ -55,11 +55,11 @@ public class UsersServiceImpl implements UsersService {
 	}
 
 	@Override
-	public Users deleteUser(String userId) {
-		Optional<Users> existingUserOpt = usersRepository.findById(userId);
+	public User deleteUser(String userId) {
+		Optional<User> existingUserOpt = usersRepository.findById(userId);
 		if(existingUserOpt.isEmpty()) throw new UsersException("User Not found with userId: " + userId);
 		
-		Users existingUser = existingUserOpt.get();
+		User existingUser = existingUserOpt.get();
 		usersRepository.delete(existingUser);
 		
 		return existingUser;

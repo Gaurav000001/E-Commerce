@@ -14,9 +14,10 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class Images {
+public class Image {
 	@Id
 	private String imageId;
 	
 	private String imageUrl;
+	
 }

@@ -16,19 +16,19 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Table(name = "Carts")
+@Table(name = "Favorites")
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class Cart {
-    @Id
-    private String cartId;
-
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+public class Favorite {
+	@Id
+	private String favoriteId;
+	
+	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @Column(name = "user_id")
-    private User user;
-    
-    @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    private List<CartItem> cartItems;
+	private User user;
+	
+	@OneToMany(mappedBy = "favorite", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private List<FavoriteItem> favoriteItems;
 }

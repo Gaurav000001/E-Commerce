@@ -27,13 +27,13 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class Users {
+public class User {
 	@Id
 	@JsonProperty(access = Access.READ_ONLY)
 	private String userId;
 	
 	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-	private String imageId;
+	private Image image;
 	
 	private String email;
 	
@@ -53,10 +53,13 @@ public class Users {
 	@UpdateTimestamp
 	private LocalDateTime updatedOn;
 	
-	@OneToMany(mappedBy = "userId", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-	private List<Addresses> addresses;
+	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	private List<Address> addresses;
 	
-	@OneToMany(mappedBy = "userId", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-	private List<Feedbacks> feedbacks;
+	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	private List<Feedback> feedbacks;
+	
+	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private List<Order> orders;
 	
 }
