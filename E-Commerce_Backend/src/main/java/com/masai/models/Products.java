@@ -1,6 +1,7 @@
 package com.masai.models;
 
 import jakarta.persistence.Entity;
+<<<<<<< HEAD
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
@@ -33,4 +34,15 @@ public class Products {
 	private Double marketPrice;
 	
 	private Boolean is_available;
+=======
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+
+@Entity
+public class Products {
+    @Id
+    private String id;
+
+
+>>>>>>> 2f1189aa956a6da21c1275fa2f31bb77771689e7
 }
