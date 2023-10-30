@@ -6,7 +6,7 @@ import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.masai.exceptions.UsersException;
+import com.masai.exceptions.UserException;
 import com.masai.models.User;
 import com.masai.repositories.UserRepository;
 
@@ -19,16 +19,16 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public User getUser(String userId) {
 		
-		return usersRepository.findById(userId).orElseThrow(() -> new UsersException("User not found with userId: " + userId));
+		return usersRepository.findById(userId).orElseThrow(() -> new UserException("User not found with userId: " + userId));
 	}
 
 	@Override
 	public User createUser(User user) {
 		Optional<User> userByEmailOpt = usersRepository.findByEmail(user.getEmail());
-		if(userByEmailOpt.isPresent()) throw new UsersException("User Already Present with email: " + user.getEmail());
+		if(userByEmailOpt.isPresent()) throw new UserException("User Already Present with email: " + user.getEmail());
 		
 		Optional<User> userByMobileNumberOpt = usersRepository.findByMobileNumber(user.getMobileNumber());
-		if(userByMobileNumberOpt.isPresent()) throw new UsersException("User Already Present with mobile number: " + user.getMobileNumber());
+		if(userByMobileNumberOpt.isPresent()) throw new UserException("User Already Present with mobile number: " + user.getMobileNumber());
 		
 		user.setUserId(UUID.randomUUID().toString());
 		// create and assign one cart to user
@@ -42,7 +42,7 @@ public class UserServiceImpl implements UserService {
 	public User updateUser(String userId, User user) {
 		// updates firstname, lastname, and dob
 		Optional<User> existingUserOpt = usersRepository.findById(userId);
-		if(existingUserOpt.isEmpty()) throw new UsersException("User Not found with userId: " + userId);
+		if(existingUserOpt.isEmpty()) throw new UserException("User Not found with userId: " + userId);
 		
 		User existingUser = existingUserOpt.get();
 		existingUser.setFirstname(user.getFirstname());
@@ -57,7 +57,7 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public User deleteUser(String userId) {
 		Optional<User> existingUserOpt = usersRepository.findById(userId);
-		if(existingUserOpt.isEmpty()) throw new UsersException("User Not found with userId: " + userId);
+		if(existingUserOpt.isEmpty()) throw new UserException("User Not found with userId: " + userId);
 		
 		User existingUser = existingUserOpt.get();
 		usersRepository.delete(existingUser);
